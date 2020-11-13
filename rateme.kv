@@ -1,4 +1,8 @@
-<AppGrid>
+<AppGrid>:
+    name: name
+    lastname: lastname
+    email: email #str1:str2 the str1 is for python and str2 is the name we should call it in the kivy ids
+
     GridLayout:
         cols:1
         size:root.width, root.height
@@ -9,15 +13,19 @@
             Label:
                 text: "Name: "
             TextInput:
+                id: name
                 multiline:False
 
             Label:
                 text: "LastName: "
             TextInput: 
+                id: lastname
                 multiline:False
             Label:
                 text: "Email: "
             TextInput: 
+                id: email
                 multiline:False
         Button:
             text:"Submit"
+            on_press: root.btn_submit()
