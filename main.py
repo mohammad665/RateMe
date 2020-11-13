@@ -40,6 +40,9 @@ class AppGrid(GridLayout):
 
         print(name, last, email)
 
+        self.name.text = ""
+        self.lastName.text = ""
+        self.email.text = ""
         
 
         
