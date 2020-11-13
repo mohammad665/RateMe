@@ -1,31 +1,15 @@
-<AppGrid>:
-    name: name
-    lastname: lastname
-    email: email #str1:str2 the str1 is for python and str2 is the name we should call it in the kivy ids
+<Button>:
+    font_size:40
+    color:0.3,0.6,0.7,1
+    size_hint: 0.3, 0.2
 
-    GridLayout:
-        cols:1
-        size:root.width, root.height
+<FloatLayout>:
+    Button:
+        pos_hint: {"x":0.5, "top":1}#,"y", "top", "bottom", "left", "right"}
+        text:"test"
+    Button:
+        id: btn
+        text:"temp" if btn.state=="normal" else "down" 
+        background_color: (0.3, 0.6, 0.5, 1) if btn.state=="normal" else (0, 0, 1, 0)
 
-        GridLayout:
-            cols:2
-
-            Label:
-                text: "Name: "
-            TextInput:
-                id: name
-                multiline:False
-
-            Label:
-                text: "LastName: "
-            TextInput: 
-                id: lastname
-                multiline:False
-            Label:
-                text: "Email: "
-            TextInput: 
-                id: email
-                multiline:False
-        Button:
-            text:"Submit"
-            on_press: root.btn_submit()
+    
