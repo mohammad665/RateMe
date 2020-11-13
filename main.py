@@ -3,7 +3,7 @@ from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
-from kivy.uix.button import ButtonS
+from kivy.uix.button import Button
 
 
 class AppGrid(GridLayout):
@@ -30,7 +30,15 @@ class AppGrid(GridLayout):
         self.add_widget(self.inside)
 
         self.submit = Button(text = "submit", font_size = 40)
+        self.submit.bind(on_press=self.pressed)
         self.add_widget(self.submit)
+
+    def pressed(self, instance):
+        name = self.name.text
+        last = self.lastName.text
+        email = self.email.text
+
+        print(name, last, email)
 
         
 
