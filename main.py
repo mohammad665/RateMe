@@ -1,10 +1,14 @@
-from kivy.app import App
+from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import DataBase
+from kivy.factory import Factory
+from kivy.animation import Animation
+
+Builder.load_string("#:import utils kivy.utils")
 
 
 class CreateAccountWindow(Screen):
@@ -20,7 +24,7 @@ class CreateAccountWindow(Screen):
                 self.reset()
 
                 sm.current = "login"
-            else:
+            else: 
                 invalidForm()
         else:
             invalidForm()
@@ -35,25 +39,25 @@ class CreateAccountWindow(Screen):
         self.namee.text = ""
 
 
-class LoginWindow(Screen):
-    email = ObjectProperty(None)
-    password = ObjectProperty(None)
+# class LoginWindow(Screen):
+#     email = ObjectProperty(None)
+#     password = ObjectProperty(None)
 
-    def loginBtn(self):
-        if db.validate(self.email.text, self.password.text):
-            MainWindow.current = self.email.text
-            self.reset()
-            sm.current = "main"
-        else:
-            invalidLogin()
+#     def loginBtn(self):
+#         if db.validate(self.email.text, self.password.text):
+#             MainWindow.current = self.email.text
+#             self.reset()
+#             sm.current = "main"
+#         else:
+#             invalidLogin()
 
-    def createBtn(self):
-        self.reset()
-        sm.current = "create"
+#     def createBtn(self):
+#         self.reset()
+#         sm.current = "create"
 
-    def reset(self):
-        self.email.text = ""
-        self.password.text = ""
+#     def reset(self):
+#         self.email.text = ""
+#         self.password.text = ""
 
 
 class MainWindow(Screen):
@@ -91,21 +95,37 @@ def invalidForm():
     pop.open()
 
 
-kv = Builder.load_file("rateme.kv")
+# kv = Builder.load_file("rateme.kv")
 
 sm = WindowManager()
 db = DataBase("users.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main")]
-for screen in screens:
-    sm.add_widget(screen)
+# screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main")]
+# for screen in screens:
+#     sm.add_widget(screen)
 
-sm.current = "login"
+# sm.current = "login"
 
 
-class RateMe(App):
+class RateMe(MDApp):
+
+    def __init__(self, **kwargs):
+        self.title = "Rate Me"
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.primary_palette = "Blue"
+        self.sm = ScreenManager()
+        super().__init__(**kwargs)
+
+    def animate_card(self, widget):
+        anim = Animation(pos_hint={"center_y": 0.6})
+        anim.start(widget)
+    def animate_background(self, widget):
+        anim = Animation(size_hint_y=0.8)
+        anim.start(widget.ids.widget_row)
+
     def build(self):
-        return sm
+        self.sm.add_widget(Factory.LoginWindow())
+        return self.sm
 
 
 if __name__ == "__main__":

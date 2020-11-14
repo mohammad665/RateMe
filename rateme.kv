@@ -1,3 +1,4 @@
+#:kivy 1.11.1
 <CreateAccountWindow>:
     name: "create"
 
@@ -76,58 +77,154 @@
                 root.submit()
 
 
-<LoginWindow>:
+<LoginWindow@Screen>:
     name: "login"
+    on_enter:
+        app.animate_card(card)
+        app.animate_background(background)
 
-    email: email
-    password: password
+    BackgroundLayer:
+        id: background
 
-    FloatLayout:
+    MDCard:
+        id: card
+        orientation: "vertical"
+        size_hint: [0.8, 0.6]
+        pos_hint: {"center_x": 0.5, "center_y":0}#it would be up using the animation
+        spacing: dp(10)
+        padding: [15, 0, 15, 15]
 
-        Label:
-            text:"Email: "
-            font_size: (root.width**2 + root.height**2) / 13**4
-            pos_hint: {"x":0.1, "top":0.9}
-            size_hint: 0.35, 0.15
-
-        TextInput:
-            id: email
-            font_size: (root.width**2 + root.height**2) / 13**4
-            multiline: False
-            pos_hint: {"x": 0.45 , "top":0.9}
-            size_hint: 0.4, 0.15
-
-        Label:
-            text:"Password: "
-            font_size: (root.width**2 + root.height**2) / 13**4
-            pos_hint: {"x":0.1, "top":0.7}
-            size_hint: 0.35, 0.15
-
-        TextInput:
-            id: password
-            font_size: (root.width**2 + root.height**2) / 13**4
-            multiline: False
+        BoxLayout:
+            orientation: "vertical"
+            
+            MDLabel:
+                text: "RATE YOUR LEARNING!"
+                text_size: self.size
+                font_size: 25
+                bold: True
+                halign: "center"
+                valign: "middle"
+            MDLabel:
+                text: "[color=00FF00] Sign in [/color]"
+                text_size: self.size
+                bold: True
+                markup: True
+                halign: "center"
+                valign: "middle"
+        MDTextField: 
+            hint_text: "Email"
+            icon_right : "account"
+        MDTextField: 
+            hint_text: "Password"
+            icon_right: "eye-off"
             password: True
-            pos_hint: {"x": 0.45, "top":0.7}
-            size_hint: 0.4, 0.15
+       
+        MDFillRoundFlatButton:
+            text: "Sign In"
+            size_hint_x:0.8
+            pos_hint: {"center_x": .5}
+        MDTextButton:
+            text: "Sign Up Here"
+            pos_hint: {"center_x": .5}
+            size_hint_x:0.6
+        
 
-        Button:
-            pos_hint:{"x":0.2,"y":0.05}
-            size_hint: 0.6, 0.2
-            font_size: (root.width**2 + root.height**2) / 13**4
-            text: "Login"
-            on_release:
-                root.manager.transition.direction = "up"
-                root.loginBtn()
 
-        Button:
-            pos_hint:{"x":0.3,"y":0.3}
-            size_hint: 0.4, 0.1
-            font_size: (root.width**2 + root.height**2) / 17**4
-            text: "Don't have an Account? Create One"
-            on_release:
-                root.manager.transition.direction = "right"
-                root.createBtn()
+    
+
+    
+<BackgroundLayer@BoxLayout>:
+    
+    orientation: "vertical"
+    BoxLayout:
+        id: widget_row
+        size_hint_y:0.1
+        orientation:"vertical"
+        canvas.before:
+            Color:
+                rgba: utils.get_color_from_hex("#8A2BE2")
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [0, 0, 40,40] #top left, top right, btm left, btm right how curvy a box is in each corner
+    BoxLayout:
+        
+        orientation: "horizontal"
+        padding: [100, 0, 0, 0]#left, right, top, btm
+        Widget:
+            canvas.before:
+                Color:
+                    rgba: utils.get_color_from_hex("#BFFF00")
+                Ellipse:
+                    pos: self.pos
+        Widget:
+            canvas.before:
+                Color: 
+                    rgba: utils.get_color_from_hex("#8A2BE2")
+                Ellipse:
+                    pos: self.pos
+
+        Widget:
+            canvas.before:
+                Color: 
+                    rgba: utils.get_color_from_hex("#00FFFF")
+                Ellipse:
+                    pos: self.pos
+
+
+
+
+    # name: "login"
+
+    # email: email
+    # password: password
+
+    # FloatLayout:
+
+    #     Label:
+    #         text:"Email: "
+    #         font_size: (root.width**2 + root.height**2) / 13**4
+    #         pos_hint: {"x":0.1, "top":0.9}
+    #         size_hint: 0.35, 0.15
+
+    #     TextInput:
+    #         id: email
+    #         font_size: (root.width**2 + root.height**2) / 13**4
+    #         multiline: False
+    #         pos_hint: {"x": 0.45 , "top":0.9}
+    #         size_hint: 0.4, 0.15
+
+    #     Label:
+    #         text:"Password: "
+    #         font_size: (root.width**2 + root.height**2) / 13**4
+    #         pos_hint: {"x":0.1, "top":0.7}
+    #         size_hint: 0.35, 0.15
+
+    #     TextInput:
+    #         id: password
+    #         font_size: (root.width**2 + root.height**2) / 13**4
+    #         multiline: False
+    #         password: True
+    #         pos_hint: {"x": 0.45, "top":0.7}
+    #         size_hint: 0.4, 0.15
+
+    #     Button:
+    #         pos_hint:{"x":0.2,"y":0.05}
+    #         size_hint: 0.6, 0.2
+    #         font_size: (root.width**2 + root.height**2) / 13**4
+    #         text: "Login"
+    #         on_release:
+    #             root.manager.transition.direction = "up"
+    #             root.loginBtn()
+
+    #     Button:
+    #         pos_hint:{"x":0.3,"y":0.3}
+    #         size_hint: 0.4, 0.1
+    #         font_size: (root.width**2 + root.height**2) / 17**4
+    #         text: "Don't have an Account? Create One"
+    #         on_release:
+    #             root.manager.transition.direction = "right"
+    #             root.createBtn()
 
 
 <MainWindow>:
