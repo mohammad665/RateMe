@@ -1,3 +1,6 @@
 mohammad.haqqani@gmail.com;1234;Mohammad;2020-11-14
 m@g.com;1234;Mohammad;2020-11-15
 m@m.m;123;m;2020-11-15
+m@gmail.com;1234;Mohammad;2020-11-15
+mohammad@gmail.com;admin123;Mohammad;2020-11-15
+mohammad1@gmail.com;admin123;mohammad;2020-11-15

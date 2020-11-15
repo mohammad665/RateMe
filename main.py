@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib.mlab as mlab
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas
 
+
 Builder.load_string("#:import utils kivy.utils")
 
 
@@ -20,10 +21,12 @@ class CreateAccountWindow(Screen):
     namee = ObjectProperty(None)
     email = ObjectProperty(None)
     password = ObjectProperty(None)
+    
 
     def submit(self):
         if self.namee.text != "" and self.email.text != "" and self.email.text.count("@") == 1 and self.email.text.count(".") > 0:
             if self.password != "":
+                
                 db.add_user(self.email.text, self.password.text, self.namee.text)
 
                 self.reset()
@@ -33,6 +36,7 @@ class CreateAccountWindow(Screen):
                 invalidForm()
         else:
             invalidForm()
+
 
     def login(self):
         self.reset()
@@ -49,7 +53,8 @@ class LoginWindow(Screen):
     password = ObjectProperty(None)
 
     def loginBtn(self):
-        if db.validate(self.email.text, self.password.text):
+        a = db.validate(self.email.text, self.password.text)
+        if ('error'  not in a):
             MainWindow.current = self.email.text
             self.reset()
             sm.current = "main"
