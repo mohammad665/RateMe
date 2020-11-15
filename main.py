@@ -7,6 +7,11 @@ from kivy.uix.label import Label
 from database import DataBase
 from kivy.factory import Factory
 from kivy.animation import Animation
+from kivy.garden.matplotlib import FigureCanvasKivyAgg
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.mlab as mlab
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas
 
 Builder.load_string("#:import utils kivy.utils")
 
@@ -39,25 +44,27 @@ class CreateAccountWindow(Screen):
         self.namee.text = ""
 
 
-# class LoginWindow(Screen):
-#     email = ObjectProperty(None)
-#     password = ObjectProperty(None)
+class LoginWindow(Screen):
+    email = ObjectProperty(None)
+    password = ObjectProperty(None)
 
-#     def loginBtn(self):
-#         if db.validate(self.email.text, self.password.text):
-#             MainWindow.current = self.email.text
-#             self.reset()
-#             sm.current = "main"
-#         else:
-#             invalidLogin()
+    def loginBtn(self):
+        if db.validate(self.email.text, self.password.text):
+            MainWindow.current = self.email.text
+            self.reset()
+            sm.current = "main"
+            print('hereeee')
+        else:
+            invalidLogin()
+            print('here')
 
-#     def createBtn(self):
-#         self.reset()
-#         sm.current = "create"
+    def createBtn(self):
+        self.reset()
+        sm.current = "create"
 
-#     def reset(self):
-#         self.email.text = ""
-#         self.password.text = ""
+    def reset(self):
+        self.email.text = ""
+        self.password.text = ""
 
 
 class MainWindow(Screen):
@@ -70,11 +77,17 @@ class MainWindow(Screen):
         sm.current = "login"
 
     def on_enter(self, *args):
+        self.plot.clear_widgets()
         password, name, created = db.get_user(self.current)
         self.n.text = "Account Name: " + name
         self.email.text = "Email: " + self.current
         self.created.text = "Created On: " + created
+        x = np.random.rand(100)
+        fig, ax = plt.subplots()
+        ax.hist(x)
+        canvas =  FigureCanvas(figure=fig)
 
+        self.plot.add_widget(canvas)
 
 class WindowManager(ScreenManager):
     pass
@@ -97,14 +110,18 @@ def invalidForm():
 
 # kv = Builder.load_file("rateme.kv")
 
-sm = WindowManager()
+sm = ScreenManager()
+# sm.add_widget(Factory.LoginWindow(name="login"))
+# sm.add_widget(CreateAccountWindow(name="create"))
+# sm.add_widget(MainWindow(name="main"))
+# sm.current = "login"
 db = DataBase("users.txt")
 
 # screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main")]
 # for screen in screens:
-#     sm.add_widget(screen)
+#     sm.add_widget(Factory.screen)
 
-# sm.current = "login"
+
 
 
 class RateMe(MDApp):
@@ -113,7 +130,8 @@ class RateMe(MDApp):
         self.title = "Rate Me"
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Blue"
-        self.sm = ScreenManager()
+        # sm = ScreenManager()
+        
         super().__init__(**kwargs)
 
     def animate_card(self, widget):
@@ -124,8 +142,12 @@ class RateMe(MDApp):
         anim.start(widget.ids.widget_row)
 
     def build(self):
-        self.sm.add_widget(Factory.LoginWindow())
-        return self.sm
+        # sm.add_widget(Factory.LoginWindow())
+        sm.add_widget(Factory.LoginWindow(name="login"))
+        sm.add_widget(CreateAccountWindow(name="create"))
+        sm.add_widget(MainWindow(name="main"))
+        # sm.current = "login"
+        return sm
 
 
 if __name__ == "__main__":

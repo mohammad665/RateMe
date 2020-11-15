@@ -1,84 +1,70 @@
 #:kivy 1.11.1
 <CreateAccountWindow>:
     name: "create"
-
+    
     namee: namee
     email: email
     password: passw
 
-    FloatLayout:
-        cols:1
+    BackgroundLayer:
+        id: Cbackground
+    # on_enter:
+    #     # app.animate_card(card)
+    #     app.animate_background(Cbackground)
+    MDCard:
+        id: registercard
+        orientation: "vertical"
+        size_hint: [0.8, 0.6]
+        pos_hint: {"center_x": 0.5, "center_y":0.6}#it would be up using the animation
+        spacing: dp(10)
+        padding: [15, 0, 15, 15]
 
-        FloatLayout:
-            size: root.width, root.height/2
-
-            Label:
-                text: "Create an Account"
-                size_hint: 0.8, 0.2
-                pos_hint: {"x":0.1, "top":1}
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8}
-                text: "Name: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            TextInput:
-                pos_hint: {"x":0.5, "top":0.8}
-                size_hint: 0.4, 0.12
-                id: namee
-                multiline: False
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8-0.13}
-                text: "Email: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            TextInput:
-                pos_hint: {"x":0.5, "top":0.8-0.13}
-                size_hint: 0.4, 0.12
-                id: email
-                multiline: False
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            Label:
-                size_hint: 0.5,0.12
-                pos_hint: {"x":0, "top":0.8-0.13*2}
-                text: "Password: "
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-            TextInput:
-                pos_hint: {"x":0.5, "top":0.8-0.13*2}
-                size_hint: 0.4, 0.12
-                id: passw
-                multiline: False
-                password: True
-                font_size: (root.width**2 + root.height**2) / 14**4
-
-        Button:
-            pos_hint:{"x":0.3,"y":0.25}
-            size_hint: 0.4, 0.1
-            font_size: (root.width**2 + root.height**2) / 17**4
+        BoxLayout:
+            orientation: "vertical"
+            MDLabel:
+                text: "[color=00FF00] Sign up [/color]"
+                text_size: self.size
+                bold: True
+                markup: True
+                halign: "center"
+                valign: "middle"
+        MDTextField: 
+            id: namee
+            hint_text: "Full Name"
+            icon_right : "account"
+        MDTextField: 
+            id: email
+            hint_text: "Email"
+            icon_right : "account"
+        MDTextField: 
+            id: passw
+            hint_text: "Password"
+            icon_right: "eye-off"
+            password: True
+       
+        MDFillRoundFlatButton:
+            text: "Sign Up"
+            pos_hint: {"center_x": .5}
+            # size_hint_x:0.2
+            on_release:
+                root.manager.transition.direction = "left"
+                root.submit()
+        MDTextButton:
             text: "Already have an Account? Log In"
+            pos_hint: {"center_x": .5}
+            size_hint_x:0.6
             on_release:
                 root.manager.transition.direction = "left"
                 root.login()
 
-        Button:
-            pos_hint:{"x":0.2,"y":0.05}
-            size_hint: 0.6, 0.15
-            text: "Submit"
-            font_size: (root.width**2 + root.height**2) / 14**4
-            on_release:
-                root.manager.transition.direction = "left"
-                root.submit()
+   
 
-
-<LoginWindow@Screen>:
+<LoginWindow>:
     name: "login"
+
+    email: email
+    password: password
+
     on_enter:
         app.animate_card(card)
         app.animate_background(background)
@@ -112,9 +98,11 @@
                 halign: "center"
                 valign: "middle"
         MDTextField: 
+            id: email
             hint_text: "Email"
             icon_right : "account"
         MDTextField: 
+            id: password
             hint_text: "Password"
             icon_right: "eye-off"
             password: True
@@ -123,16 +111,17 @@
             text: "Sign In"
             size_hint_x:0.8
             pos_hint: {"center_x": .5}
+            on_release:
+                root.manager.transition.direction = "up"
+                root.loginBtn()
         MDTextButton:
             text: "Sign Up Here"
             pos_hint: {"center_x": .5}
             size_hint_x:0.6
+            on_release:
+                root.manager.transition.direction = "right"
+                root.createBtn()
         
-
-
-    
-
-    
 <BackgroundLayer@BoxLayout>:
     
     orientation: "vertical"
@@ -150,19 +139,21 @@
     BoxLayout:
         
         orientation: "horizontal"
-        padding: [100, 0, 0, 0]#left, right, top, btm
+        padding: [200, 0, 0, 0]#left, right, top, btm
         Widget:
             canvas.before:
                 Color:
                     rgba: utils.get_color_from_hex("#BFFF00")
                 Ellipse:
                     pos: self.pos
+                    size: [20,20]
         Widget:
             canvas.before:
                 Color: 
                     rgba: utils.get_color_from_hex("#8A2BE2")
                 Ellipse:
                     pos: self.pos
+                    size: [20,20]
 
         Widget:
             canvas.before:
@@ -170,91 +161,46 @@
                     rgba: utils.get_color_from_hex("#00FFFF")
                 Ellipse:
                     pos: self.pos
-
-
-
-
-    # name: "login"
-
-    # email: email
-    # password: password
-
-    # FloatLayout:
-
-    #     Label:
-    #         text:"Email: "
-    #         font_size: (root.width**2 + root.height**2) / 13**4
-    #         pos_hint: {"x":0.1, "top":0.9}
-    #         size_hint: 0.35, 0.15
-
-    #     TextInput:
-    #         id: email
-    #         font_size: (root.width**2 + root.height**2) / 13**4
-    #         multiline: False
-    #         pos_hint: {"x": 0.45 , "top":0.9}
-    #         size_hint: 0.4, 0.15
-
-    #     Label:
-    #         text:"Password: "
-    #         font_size: (root.width**2 + root.height**2) / 13**4
-    #         pos_hint: {"x":0.1, "top":0.7}
-    #         size_hint: 0.35, 0.15
-
-    #     TextInput:
-    #         id: password
-    #         font_size: (root.width**2 + root.height**2) / 13**4
-    #         multiline: False
-    #         password: True
-    #         pos_hint: {"x": 0.45, "top":0.7}
-    #         size_hint: 0.4, 0.15
-
-    #     Button:
-    #         pos_hint:{"x":0.2,"y":0.05}
-    #         size_hint: 0.6, 0.2
-    #         font_size: (root.width**2 + root.height**2) / 13**4
-    #         text: "Login"
-    #         on_release:
-    #             root.manager.transition.direction = "up"
-    #             root.loginBtn()
-
-    #     Button:
-    #         pos_hint:{"x":0.3,"y":0.3}
-    #         size_hint: 0.4, 0.1
-    #         font_size: (root.width**2 + root.height**2) / 17**4
-    #         text: "Don't have an Account? Create One"
-    #         on_release:
-    #             root.manager.transition.direction = "right"
-    #             root.createBtn()
-
-
+                    size: [20,20]
 <MainWindow>:
     n: n
     email: email
     created:created
+    plot: plot
 
-    FloatLayout:
-        Label:
-            id: n
-            pos_hint:{"x": 0.1, "top":0.9}
-            size_hint:0.8, 0.2
-            text: "Account Name: "
+    BackgroundLayer:
 
-        Label:
-            id: email
-            pos_hint:{"x": 0.1, "top":0.7}
-            size_hint:0.8, 0.2
-            text: "Email: "
+    Label:
+        id: n
+        color: 1,0,0,1
+        pos_hint:{"x": 0.1, "top":0.9}
+        size_hint:0.8, 0.2
+        text: "Account Name: "
 
-        Label:
-            id: created
-            pos_hint:{"x": 0.1, "top":0.5}
-            size_hint:0.8, 0.2
-            text: "Created: "
+    Label:
+        id: email
+        color: 1,0,0,1
+        pos_hint:{"x": 0.1, "top":0.85}
+        size_hint:0.8, 0.2
+        text: "Email: "
 
-        Button:
-            pos_hint:{"x":0.2, "y": 0.1}
-            size_hint:0.6,0.2
-            text: "Log Out"
-            on_release:
-                app.root.current = "login"
-                root.manager.transition.direction = "down"
+    Label:
+        id: created
+        color: 1,0,0,1
+        pos_hint:{"x": 0.1, "top":0.8}
+        size_hint:0.8, 0.2
+        text: "Created: "
+
+    BoxLayout:
+        id: plot
+        pos_hint:{"x": 0.1, "top":0.6}
+        size_hint:0.8, 0.6
+
+    MDFillRoundFlatButton:
+        text: "Log Out"
+        # size_hint_x:0.8
+        pos_hint:{"x":0.9, "y": 0.9}
+        on_release:
+            app.root.current = "login"
+            root.manager.transition.direction = "down"
+            
